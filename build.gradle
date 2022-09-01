@@ -3,14 +3,12 @@ plugins {
     id 'org.jetbrains.intellij' version '1.8.1'
 }
 
-group 'io.fromnowon'
+group 'cn.jgayb'
 version '0.2.10'
-sourceCompatibility = 11
-targetCompatibility = 11
 
 repositories {
     maven { url "https://www.jetbrains.com/intellij-repository/releases" }
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'https://maven.aliyun.com/repository/public/' }
     mavenCentral()
 }
 
@@ -19,13 +17,23 @@ dependencies {
 }
 
 intellij {
-    localPath = '/Applications/IntelliJ IDEA.app/Contents'
+    localPath = '/Applications/IntelliJ IDEA CE.app/Contents'
     plugins = ['com.intellij.java']
-    type = 'IU'
+    type = 'IC'
     sameSinceUntilBuild = false
 }
 
-patchPluginXml {
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = 11
+    targetCompatibility = 11
+    options.encoding = "UTF-8"
+}
+
+tasks.patchPluginXml {
     sinceBuild = '203.8084.24'
     untilBuild = '222.*'
     changeNotes = """If you have any comments please let me know.<br>
@@ -91,13 +99,4 @@ patchPluginXml {
         <li>适配2022.2版本</li>
     </ul>
 </em>"""
-
-}
-
-test {
-    useJUnitPlatform()
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
 }
